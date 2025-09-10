@@ -40,7 +40,7 @@ export const createGeneralSettings = () =>
 				alert: 'This_is_a_deprecated_feature_alert',
 			});
 		});
-		await this.add('Show_Setup_Wizard', 'pending', {
+		await this.add('Show_Setup_Wizard', 'completed', {
 			type: 'select',
 			public: true,
 			readonly: true,

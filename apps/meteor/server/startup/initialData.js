@@ -36,7 +36,7 @@ export async function insertAdminUserFromEnv() {
 						adminUser.emails = [
 							{
 								address: process.env.ADMIN_EMAIL,
-								verified: process.env.ADMIN_EMAIL_VERIFIED === 'true',
+								verified: true,
 							},
 						];
 
@@ -198,9 +198,9 @@ Meteor.startup(async () => {
 
 	if ((await Roles.countUsersInRole('admin')) !== 0) {
 		if (settings.get('Show_Setup_Wizard') === 'pending') {
-			console.log('Setting Setup Wizard to "in_progress" because, at least, one admin was found');
+			console.log('Setting Setup Wizard to "completed" to skip cloud registration');
 
-			(await Settings.updateValueById('Show_Setup_Wizard', 'in_progress')).modifiedCount &&
+			(await Settings.updateValueById('Show_Setup_Wizard', 'completed')).modifiedCount &&
 				void notifyOnSettingChangedById('Show_Setup_Wizard');
 		}
 	}
@@ -247,7 +247,7 @@ Meteor.startup(async () => {
 		await addUserRolesAsync(adminUser._id, ['admin']);
 
 		if (settings.get('Show_Setup_Wizard') === 'pending') {
-			(await Settings.updateValueById('Show_Setup_Wizard', 'in_progress')).modifiedCount &&
+			(await Settings.updateValueById('Show_Setup_Wizard', 'completed')).modifiedCount &&
 				void notifyOnSettingChangedById('Show_Setup_Wizard');
 		}
 
