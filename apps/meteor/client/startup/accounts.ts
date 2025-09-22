@@ -19,19 +19,23 @@ const watchMainReady = () => {
 };
 
 Accounts.onEmailVerificationLink((token: string) => {
-	Accounts.verifyEmail(token, (error) => {
-		Tracker.autorun(() => {
-			if (!watchMainReady()) return;
+        Accounts.verifyEmail(token, (error) => {
+                Tracker.autorun((c) => {
+                        if (!watchMainReady()) {
+                                return;
+                        }
 
-			if (error) {
-				dispatchToastMessage({ type: 'error', message: error });
-				throw new Meteor.Error('verify-email', 'E-mail not verified');
-			} else {
-				Tracker.nonreactive(() => {
-					void sdk.call('afterVerifyEmail');
-				});
-				dispatchToastMessage({ type: 'success', message: t('Email_verified') });
-			}
-		});
-	});
+                        c.stop();
+
+                        if (error) {
+                                dispatchToastMessage({ type: 'error', message: error });
+                                throw new Meteor.Error('verify-email', 'E-mail not verified');
+                        }
+
+                        Tracker.nonreactive(() => {
+                                void sdk.call('afterVerifyEmail');
+                        });
+                        dispatchToastMessage({ type: 'success', message: t('Email_verified') });
+                });
+        });
 });
