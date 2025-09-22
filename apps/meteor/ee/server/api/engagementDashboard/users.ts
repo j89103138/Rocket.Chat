@@ -75,7 +75,6 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		permissionsRequired: ['view-engagement-dashboard'],
-		license: ['engagement-dashboard'],
 	},
 	{
 		async get() {
@@ -100,7 +99,6 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		permissionsRequired: ['view-engagement-dashboard'],
-		license: ['engagement-dashboard'],
 	},
 	{
 		async get() {
@@ -125,7 +123,6 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		permissionsRequired: ['view-engagement-dashboard'],
-		license: ['engagement-dashboard'],
 	},
 	{
 		async get() {
@@ -149,7 +146,6 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		permissionsRequired: ['view-engagement-dashboard'],
-		license: ['engagement-dashboard'],
 	},
 	{
 		async get() {
@@ -173,7 +169,6 @@ API.v1.addRoute(
 	{
 		authRequired: true,
 		permissionsRequired: ['view-engagement-dashboard'],
-		license: ['engagement-dashboard'],
 	},
 	{
 		async get() {

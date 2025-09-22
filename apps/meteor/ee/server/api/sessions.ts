@@ -1,6 +1,5 @@
 import { api } from '@rocket.chat/core-services';
 import type { IUser, ISession, DeviceManagementSession, DeviceManagementPopulatedSession } from '@rocket.chat/core-typings';
-import { License } from '@rocket.chat/license';
 import { Users, Sessions } from '@rocket.chat/models';
 import type { PaginatedResult, PaginatedRequest } from '@rocket.chat/rest-typings';
 import { escapeRegExp } from '@rocket.chat/string-helpers';
@@ -82,12 +81,9 @@ declare module '@rocket.chat/rest-typings' {
 
 API.v1.addRoute(
 	'sessions/list',
-	{ authRequired: true, validateParams: isSessionsPaginateProps, license: ['device-management'] },
+	{ authRequired: true, validateParams: isSessionsPaginateProps },
 	{
 		async get() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const { offset, count } = await getPaginationItems(this.queryParams);
 			const { sort = { loginAt: -1 } } = await this.parseJsonQuery();
@@ -105,12 +101,9 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'sessions/info',
-	{ authRequired: true, validateParams: isSessionsProps, license: ['device-management'] },
+	{ authRequired: true, validateParams: isSessionsProps },
 	{
 		async get() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const { sessionId } = this.queryParams;
 			const sessions = await Sessions.findOneBySessionIdAndUserId(sessionId, this.userId);
@@ -124,12 +117,9 @@ API.v1.addRoute(
 
 API.v1.addRoute(
 	'sessions/logout.me',
-	{ authRequired: true, validateParams: isSessionsProps, license: ['device-management'] },
+	{ authRequired: true, validateParams: isSessionsProps },
 	{
 		async post() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const { sessionId } = this.bodyParams;
 			const sessionObj = await Sessions.findOneBySessionIdAndUserId(sessionId, this.userId);
@@ -155,13 +145,9 @@ API.v1.addRoute(
 		twoFactorRequired: true,
 		validateParams: isSessionsPaginateProps,
 		permissionsRequired: ['view-device-management'],
-		license: ['device-management'],
 	},
 	{
 		async get() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const { offset, count } = await getPaginationItems(this.queryParams);
 			const { sort = { loginAt: -1 } } = await this.parseJsonQuery();
@@ -201,13 +187,9 @@ API.v1.addRoute(
 		twoFactorRequired: true,
 		validateParams: isSessionsProps,
 		permissionsRequired: ['view-device-management'],
-		license: ['device-management'],
 	},
 	{
 		async get() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const sessionId = this.queryParams?.sessionId as string;
 			const { sessions } = await Sessions.aggregateSessionsAndPopulate({ search: sessionId, count: 1 });
@@ -226,13 +208,9 @@ API.v1.addRoute(
 		twoFactorRequired: true,
 		validateParams: isSessionsProps,
 		permissionsRequired: ['logout-device-management'],
-		license: ['device-management'],
 	},
 	{
 		async post() {
-			if (!License.hasModule('device-management')) {
-				return API.v1.forbidden();
-			}
 
 			const { sessionId } = this.bodyParams;
 			const sessionObj = await Sessions.findOneBySessionId(sessionId);

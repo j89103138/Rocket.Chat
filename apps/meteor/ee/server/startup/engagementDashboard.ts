@@ -1,13 +1,12 @@
-import { License } from '@rocket.chat/license';
-
-License.onToggledFeature('engagement-dashboard', {
-	up: async () => {
+// Engagement Dashboard - Made available without license restrictions
+(async () => {
+	try {
 		const { prepareAnalytics, attachCallbacks } = await import('../lib/engagementDashboard/startup');
-		await prepareAnalytics();
-		attachCallbacks();
-	},
-	down: async () => {
-		const { detachCallbacks } = await import('../lib/engagementDashboard/startup');
-		detachCallbacks();
-	},
-});
+		if (prepareAnalytics && attachCallbacks) {
+			await prepareAnalytics();
+			attachCallbacks();
+		}
+	} catch (error) {
+		console.error('Failed to initialize engagement dashboard:', error);
+	}
+})();

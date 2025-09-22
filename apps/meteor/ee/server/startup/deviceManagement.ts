@@ -1,20 +1,16 @@
-import { License } from '@rocket.chat/license';
-
 import { addSettings } from '../settings/deviceManagement';
 
-let stopListening: (() => void) | undefined;
-License.onToggledFeature('device-management', {
-	up: async () => {
+// Device Management - Made available without license restrictions
+(async () => {
+	try {
 		const { createPermissions, createEmailTemplates } = await import('../lib/deviceManagement/startup');
 		const { listenSessionLogin } = await import('../lib/deviceManagement/session');
 
 		await addSettings();
-		await createPermissions();
-		await createEmailTemplates();
-		stopListening = await listenSessionLogin();
-	},
-	down: async () => {
-		stopListening?.();
-		stopListening = undefined;
-	},
-});
+		if (createPermissions) await createPermissions();
+		if (createEmailTemplates) await createEmailTemplates();
+		if (listenSessionLogin) await listenSessionLogin();
+	} catch (error) {
+		console.error('Failed to initialize device management:', error);
+	}
+})();
