@@ -196,10 +196,13 @@ export function prepareMessageObject(
 	}
 
 	const { _id, username, name } = user;
+	const normalizedUsername = typeof username === 'string' ? username : '';
+	const normalizedName = typeof name === 'string' ? name : undefined;
+
 	message.u = {
 		_id,
-		username: username as string, // FIXME: this is wrong but I don't want to change it now
-		name,
+		username: normalizedUsername,
+		name: normalizedName,
 	};
 	message.rid = rid;
 

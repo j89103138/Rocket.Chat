@@ -1,8 +1,25 @@
 const KEY = 'sw_last_reload';
 const RELOAD_WINDOW = 1000 * 10;
 
+function safeLocalStorageGet(key: string) {
+	try {
+		return localStorage.getItem(key);
+	} catch (error) {
+		console.warn('service worker: unable to access localStorage', error);
+		return null;
+	}
+}
+
+function safeLocalStorageSet(key: string, value: string) {
+	try {
+		localStorage.setItem(key, value);
+	} catch (error) {
+		console.warn('service worker: unable to persist service worker reload marker', error);
+	}
+}
+
 function reload() {
-	const lastReload = localStorage.getItem(KEY);
+	const lastReload = safeLocalStorageGet(KEY);
 
 	if (lastReload) {
 		const last = Date.parse(lastReload);
@@ -16,7 +33,7 @@ function reload() {
 		}
 	}
 
-	localStorage.setItem(KEY, new Date().toISOString());
+	safeLocalStorageSet(KEY, new Date().toISOString());
 	console.log('service worker: reloading to activate');
 	window.location.reload();
 }
