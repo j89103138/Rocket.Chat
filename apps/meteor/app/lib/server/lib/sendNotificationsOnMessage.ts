@@ -182,25 +182,20 @@ export const sendNotification = async ({
 			isThread,
 		})
 	) {
-                const messageWithUnicode = message.msg ? emojione.shortnameToUnicode(message.msg) : message.msg;
-                const messageAttachments = message.attachments ?? [];
-                const [rawFirstAttachment, ...remainingAttachments] = messageAttachments;
+		const messageWithUnicode = message.msg ? emojione.shortnameToUnicode(message.msg) : message.msg;
+		const messageAttachments = message.attachments ?? [];
+		const [rawFirstAttachment, ...remainingAttachments] = messageAttachments;
 
-                const firstAttachment = rawFirstAttachment
-                        ? {
-                                        ...rawFirstAttachment,
-                                        description:
-                                                typeof rawFirstAttachment.description === 'string'
-                                                        ? emojione.shortnameToUnicode(rawFirstAttachment.description)
-                                                        : undefined,
-                                        text:
-                                                typeof rawFirstAttachment.text === 'string'
-                                                        ? emojione.shortnameToUnicode(rawFirstAttachment.text)
-                                                        : undefined,
-                                }
-                        : undefined;
+		const firstAttachment = rawFirstAttachment
+			? {
+					...rawFirstAttachment,
+					description:
+						typeof rawFirstAttachment.description === 'string' ? emojione.shortnameToUnicode(rawFirstAttachment.description) : undefined,
+					text: typeof rawFirstAttachment.text === 'string' ? emojione.shortnameToUnicode(rawFirstAttachment.text) : undefined,
+				}
+			: undefined;
 
-                const attachments = (firstAttachment ? [firstAttachment, ...remainingAttachments] : [...remainingAttachments]).filter(Boolean);
+		const attachments = (firstAttachment ? [firstAttachment, ...remainingAttachments] : [...remainingAttachments]).filter(Boolean);
 		for await (const email of receiver.emails) {
 			if (email.verified) {
 				queueItems.push({

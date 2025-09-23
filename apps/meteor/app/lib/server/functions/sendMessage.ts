@@ -195,15 +195,15 @@ export function prepareMessageObject(
 		delete message.tshow;
 	}
 
-        const { _id, username, name } = user;
-        const normalizedUsername = typeof username === 'string' ? username : '';
-        const normalizedName = typeof name === 'string' ? name : undefined;
+	const { _id, username, name } = user;
+	const normalizedUsername = typeof username === 'string' ? username : '';
+	const normalizedName = typeof name === 'string' ? name : undefined;
 
-        message.u = {
-                _id,
-                username: normalizedUsername,
-                name: normalizedName,
-        };
+	message.u = {
+		_id,
+		username: normalizedUsername,
+		name: normalizedName,
+	};
 	message.rid = rid;
 
 	if (!Match.test(message.msg, String)) {
